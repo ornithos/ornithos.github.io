@@ -1,0 +1,19 @@
+<figure>
+  <img class="image" width="{{ include.w }}" src="/assets/img/{{ include.url }}"
+    {% if include.caption %}
+    alt="{{ include.caption }}"
+    {% endif %}
+    style="
+	    {% if include.padding %}
+	    	padding-right:{{include.padding}};
+	    {% endif %}
+	    {% if include.border %}
+	    	border:{{include.border}};
+    	{% endif %}
+    "
+  >
+  {% if include.caption %}
+  <figcaption class="image-caption">{{ include.caption }}</figcaption>
+  {% endif %}
+</figure>
+

@@ -13,7 +13,7 @@ a job which (in my view) is most rapidly advanced by blogging, provided that the
 <!-- Clearly the appropriate use of data can be really powerful, and like any technology has tremendous power for good or ill. -->
 
 ### What is this?
-In this blog I'm intending to write mostly about machine learning (thanks to fast.ai for the blog setup and theme[^2]). At present this will be a summary of some of my phd projects, and some things I've learned which did not make it into papers. Research probably bears some analogy to rejection sampling, especially where little theory is available for guidance (as in ML), and one learns as much through failures (perhaps
+In this blog[^fastaitemplate] I'm intending to write predominantly about machine learning. At present this will be a summary of some of my phd projects, and some things I've learned which did not make it into papers. Research probably bears some analogy to rejection sampling, especially where little theory is available for guidance (as in ML), and one learns as much through failures (perhaps
 more so) than successes. I'm especially interested in making some of my negative results available; while it is difficult to verify these, it may still  give a few pointers to those who set foot along the same paths. 
 
 ### Contact
@@ -26,4 +26,4 @@ I'm not overly enamoured of social media, and I'm not really contactable there, 
 
 [^1]: Some areas of ML really are mature, such as those built on the foundations of learning theory (Vapnik et al.), or those bits which are arguably statistics. But I don't think too many would shoot me for saying that most of modern ML is pretty immature.
 
-[^2]: [https://github.com/fastai/fast\_template](https://github.com/fastai/fast_template) with an overview given [here](https://www.fast.ai/2020/01/16/fast_template/). No, I'm not using Minimal Mistakes, and yes I know it's excellent.
+[^fastaitemplate]: Thanks to fast.ai for the original [template](https://github.com/fastai/fast_template) [(introductory blog)](https://www.fast.ai/2020/01/16/fast_template/). I've made some modifications -- so any poor choices remain my own responsibility. No, I'm not using Minimal Mistakes, and yes I know it's excellent.

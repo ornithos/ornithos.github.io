@@ -11,7 +11,7 @@ GITHUB_REPONAME = "ornithos/ornithos.github.io"
 
 desc "Generate blog files"
 task :generate do
-  system("bundle exec jekyll serve")
+  system("bundle exec jekyll build")
 end
 
 
@@ -21,7 +21,10 @@ task :publish => [:generate] do
     cp_r "_site/.", tmp
     
     system "git checkout HEAD -- _site"   # this has been copied to tmpdir / need to revert for checkout.
-    system "git checkout master"
+    checkout_ok = system "git checkout master"
+    unless checkout_ok
+        raise "GIT FAILED TO CHECKOUT MASTER BRANCH"
+    end
     cp_r File.join(tmp, "."), "."
     message = "Site updated at #{Time.now.utc}"
     system "git add ."

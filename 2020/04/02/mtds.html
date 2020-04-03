@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Multi-task dynamical systems: learning a family of sequences | Alex Bird</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Multi-task dynamical systems: learning a family of sequences" />
+<meta name="author" content="Alex Bird" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Reflections of my work in machine learning." />
+<meta property="og:description" content="Reflections of my work in machine learning." />
+<meta property="og:site_name" content="Alex Bird" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-04-02T00:00:00+01:00" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"Alex Bird"},"url":"/2020/04/02/mtds.html","description":"Reflections of my work in machine learning.","@type":"BlogPosting","headline":"Multi-task dynamical systems: learning a family of sequences","dateModified":"2020-04-02T00:00:00+01:00","datePublished":"2020-04-02T00:00:00+01:00","mainEntityOfPage":{"@type":"WebPage","@id":"/2020/04/02/mtds.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="Alex Bird" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+          delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+          ]}
+        );
+      });
+    </script>
+  
+
+  <script>
+  function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+  }
+  window.onload = wrap_img;
+  </script>
+
+</head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Alex Bird</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about.html">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Multi-task dynamical systems: learning a family of sequences</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2020-04-02T00:00:00+01:00" itemprop="datePublished">Apr 2, 2020
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    
+<p>The multi-task dynamical system (MTDS) was the focus of my phd. In this post, the first of a two-part series, I’ll try to unpack the motivation for the project, as well as providing a concise description of the model.</p>
+
+<!--
+<div class="row" style="display: flex">
+  <div class="column" style="flex:50%; padding=5px">
+    <img src="/assets/img/DHO_interp1.png" style="width:100%; border:0">
+  </div>
+  <div class="column" style="flex:50%; padding=5px">
+    <img src="/assets/img/DHO_interp2.png" style="width:100%; border:0">
+  </div>
+</div>
+-->
+
+<p><br /></p>
+<h2 id="sequence-families">Sequence families</h2>
+<p>Physical models are ubiquitous in (so-called ‘hard’) scientific disciplines. At a macro level, nature appears to obey some remarkably simple rules, which can be exploited to provide forecasts of physical phenomena with high accuracy. These rules are codified into models with <em>parameters</em> which ‘tune’ the model to a given situation, such as lengths, masses or damping factors. Under all the different parameter configurations, such a model corresponds to a collection of sequences which we will call the ‘<strong>sequence family</strong>’. Examples include bouncing balls (with the family corresponding to different gravitational fields or drag coefficients); or damped harmonic oscillation (under different frequencies and/or decay coefficients) – see Figures 1a, 1b below.</p>
+
+<!-- <figure>
+  <img class="image" width="500px" src="/assets/img/bounceballs.svg"
+    
+    alt="<b>Figure 2</b>: Examples of sequences from family of bouncing particles."
+    
+    style="
+	    
+	    	padding-right:100px;
+	    
+	    
+	    	border:0px;
+    	
+    "
+  >
+  
+  <figcaption class="image-caption"><b>Figure 2</b>: Examples of sequences from family of bouncing particles.</figcaption>
+  
+</figure>
+
+
+
+<figure>
+  <img class="image" width="500px" src="/assets/img/2xdho.svg"
+    
+    alt="<b>Figure 2</b>: Examples of sequences from family of (sum of two) damped harmonic oscillators."
+    
+    style="
+	    
+	    	padding-right:100px;
+	    
+	    
+	    	border:0px;
+    	
+    "
+  >
+  
+  <figcaption class="image-caption"><b>Figure 2</b>: Examples of sequences from family of (sum of two) damped harmonic oscillators.</figcaption>
+  
+</figure>
+
+ -->
+
+<div class="row" style="display: flex">
+  <div class="column" style="flex:50%; padding=5px">
+    <img src="/assets/img/bounceballs.svg" style="width:100%; border:0" />
+    <figcaption class="image-caption"><b>Figure 1a</b>: The family of bouncing particles (examples).</figcaption>
+  </div>
+  <div class="column" style="flex:50%; padding=5px">
+    <img src="/assets/img/2xdho.svg" style="width:100%; border:0" />
+    <figcaption class="image-caption"><b>Figure 1b</b>: The family of two superposed damped harmonic oscillators (examples).</figcaption>
+  </div>
+</div>
+<p><br /></p>
+
+<p>Sequence families also exist in many real-world situations where the data generating process is  poorly understood. This case is evidently the norm, not the exception, and is apparent in such domains as healthcare, finance, retail, and graphics (e.g. mocap). For instance, the person-to-person differences in ECG waveforms and store-to-store differences in retail sales (Figures 2a and 2b) are – to the best of my knowledge – not well understood. Nevertheless, we are often capable of curating many examples to represent the sequence family.</p>
+
+<div class="row" style="display: flex">
+  <div class="column" style="flex:50%; padding=5px">
+    <img src="/assets/img/ecg_3d.svg" style="width:100%; border:0; padding-left:10px" />
+    <figcaption class="image-caption"><b>Figure 2a</b>: ECG waveforms (source: <a href="https://physionet.org/content/ecgrdvq/1.0.0/">PhysioNet</a>, ECG lead I, under various drugs; waveforms offset for clarity).</figcaption>
+  </div>
+  <div class="column" style="flex:50%; padding=5px">
+    <img src="/assets/img/walmart.svg" style="width:100%; border:0" />
+    <figcaption class="image-caption"><b>Figure 2b</b>. Retail time series: store sales response to similar exogeneous conditions (source: <a href="https://www.kaggle.com/c/walmart-recruiting-store-sales-forecasting">Walmart / Kaggle</a>, product group 12, smoothed for clarity).</figcaption>
+  </div>
+</div>
+<p><br /></p>
+
+<p>Where a model of the sequence family is available, forecasting (or otherwise modelling) a sequence can be tailored to the individual. This is useful for modelling the sales response of a product, or more crucially, modelling the response of a patient to a drug. However, where no sequence family model is available, such tailored predictions are not so easily available.</p>
+
+<p><br /></p>
+<h3 id="the-inductive-bias-of-a-sequence-family">The inductive bias of a sequence family</h3>
+
+<p>Let’s suppose one wanted to predict the trajectory of a bouncing ball from a small number of observations, and further, suppose that the material properties of the ball were not known. Figure 3 shows three observations of the height of a ball denoted by black crosses. If we assume some measurement error, there are infinitely many sequences from the ‘bouncing ball’ family which can fit the data, some examples of which are drawn below.</p>
+
+<figure>
+  <img class="image" width="900" src="/assets/img/bounceballs_family_compressed.gif" alt="&lt;br&gt;&lt;b&gt;Figure 3&lt;/b&gt;: Bouncing ball sequence family members (blue) which are consistent with the three observations (black)." style="
+	    
+	    
+	    	border:0px;
+    	
+    " />
+  
+  <figcaption class="image-caption"><br /><b>Figure 3</b>: Bouncing ball sequence family members (blue) which are consistent with the three observations (black).</figcaption>
+  
+</figure>
+
+<p>Despite the infinitude of possible sequence completions, we still have a good idea of how the ball will move in the short term, and a qualitative idea of its continued motion. This follows from the strong inductive bias imposed by the sequence family.</p>
+
+<p>Suppose, in contrast, that no sequence family was known for these observations, and hence no inductive bias was available. What then could be said? In this case, almost nothing at all; the sequence continuation might be just about anything. Even just to visualize the problem, we must impose a weak inductive bias, such as once-differentiable sequences with a ‘sensible’ scale length and magnitude. See below for some examples.<sup id="fnref:Matern"><a href="#fn:Matern" class="footnote">1</a></sup></p>
+
+<figure>
+  <img class="image" width="900" src="/assets/img/bounceballs_nofamily2_compressed.gif" alt="&lt;br&gt;&lt;b&gt;Figure 4&lt;/b&gt;: Sequences which are consistent with the three observations without a known sequence family." style="
+	    
+	    
+	    	border:0px;
+    	
+    " />
+  
+  <figcaption class="image-caption"><br /><b>Figure 4</b>: Sequences which are consistent with the three observations without a known sequence family.</figcaption>
+  
+</figure>
+
+<p>We may as well give up on forecasting in this case. Access to an inductive bias gives us the answers to the following crucial questions:</p>
+
+<ol>
+  <li>Is the past indicative of the future?</li>
+  <li>If so, in what way(s)?</li>
+  <li>Can these be sufficiently well determined, given the data, to make meaningful predictions?</li>
+</ol>
+
+<p>In the absence of an inductive bias, even the first question remains off-limits. Ultimately, forecasting sequential data is only <strong>possible</strong> via use of an inductive bias about the data generating process, and only <strong>useful</strong> if this inductive bias is well-matched to the true process.<sup id="fnref:Drucker"><a href="#fn:Drucker" class="footnote">2</a></sup>
+<!-- In terms of the bias-variance trade-off, the absence of inductive bias results in high-variance/low-bias predictions; an inductive bias results in low-variance predictions, and the specification of the inductive bias resolves the final performance.  -->
+In the case of the physical models discussed, the inductive bias encodes a good approximation of the true process, allowing excellent predictions.</p>
+
+<!-- However, in many real-world situations, especially those involving humans, the data generating process is very poorly understood. This case is evidently the norm, not the exception, and is apparent in such domains as healthcare, finance, retail, and graphics (e.g. mocap); see Figures 5a and 5b for two examples.
+
+<div class="row" style="display: flex">
+  <div class="column" style="flex:50%; padding=5px">
+    <img src="/assets/img/ecg_3d.svg" style="width:100%; border:0; padding-left:10px">
+    <figcaption class="image-caption"><b>Figure 5a</b>: ECG waveforms (source: <a href='https://physionet.org/content/ecgrdvq/1.0.0/'>PhysioNet</a>, ECG lead I, response to Ranolazine, Dofetilide, Verapamil, and Quinidine; waveforms offset for clarity).</figcaption>
+  </div>
+  <div class="column" style="flex:50%; padding=5px">
+    <img src="/assets/img/walmart.svg" style="width:100%; border:0">
+    <figcaption class="image-caption"><b>Figure 5b</b>. Retail time series: store sales response to similar exogeneous conditions (source: <a href='https://www.kaggle.com/c/walmart-recruiting-store-sales-forecasting'>Walmart / Kaggle</a>, product group 12, smoothed for clarity).</figcaption>
+  </div>
+</div>
+<br> -->
+
+<p><br /></p>
+<h3 id="modelling-the-sequence-family">Modelling the sequence family</h3>
+
+<p>Modelling a sequence family requires two quantities. Firstly, we need a likelihood, $p(\mathbf{y}_{1:T}\,|\, \boldsymbol{\theta})$ (ignoring inputs for the time being). In the case of the bouncing ball, this is a differential equation, where $\boldsymbol{\theta}$ corresponds to the parameters gravity and drag, plus some Gaussian noise. But the family corresponds to <em>all</em> of the possible (or probable) values of $\boldsymbol{\theta} \in \Theta$, which can be specified by a prior, $p(\boldsymbol{\theta})$. This defines the variability between sequences in the sequence family: a tightly concentrated prior will result in little inter-sequence variation, and an uninformative prior may result in large differences between members of the family. The model of the sequence family is the hierarchical model:</p>
+
+<!-- What does a model of a sequence family look like? Let us take the physical models discussed above as an example. Each model specifies a likelihood $p(\mathbf{y}_{1:T}\,\|\, \boldsymbol{\theta})$ of the sequence $\mathbf{y}\_{1:T}, \,\,\, \mathbf{y}\_t \in \mathbb{R}^{n_y}$ (ignoring inputs for the time being) for a given parameter setting $\boldsymbol{\theta}$. For instance, we can obtain the expected position of the bouncing ball under certain assumptions of gravity and drag. Sweeping over all possible values of $\boldsymbol{\theta} \in \Theta$ results in a large collection of sequences, generating a sequence family. It is more useful to specify a prior distribution $p(\boldsymbol{\theta})$ over $\Theta$ which specifies the probability of each parameter setting. The model of the sequence family is therefore: -->
+
+<script type="math/tex; mode=display">p(\mathbf{y}_{1:T}) = \int p(\mathbf{y}_{1:T}\,|\, \boldsymbol{\theta})\, p(\boldsymbol{\theta})\, d \boldsymbol{\theta}.</script>
+
+<p><strong>For meaningful sequence families, the typical set of $p(\mathbf{y}_{1:T})$ is small compared to the possible sequence space $\mathbb{R}^{n_y \times T}$</strong>: the strength of the inductive bias depends directly on the relative size of the typical set. For the physical models, scientific investigation has provided us with the likelihood $p(\mathbf{y}_{1:T}\,|\, \boldsymbol{\theta})$, and the prior may be specified using domain knowledge since the parameters are directly interpretable. In the more general setting, neither of these quantities are easily specified. Let us first consider the likelihood: I propose using a dynamical system; a general purpose choice.</p>
+
+<p><br /></p>
+<h3 id="dynamical-systems">Dynamical systems</h3>
+
+<p>Let’s briefly review what a dynamical system is.<sup id="fnref:introductionDS"><a href="#fn:introductionDS" class="footnote">3</a></sup><sup id="fnref:ssms"><a href="#fn:ssms" class="footnote">4</a></sup> Dynamical systems, or state space models posit a latent (unobserved) chain of random variables $\mathbf{x}_t$, $t=1,\ldots,T$ which account for the time-structured evolution of the sequence. Crucially, the observed $\{\mathbf{y}_t\}$ only give a partial insight into this evolution, allowing the state $\{\mathbf{x}_t\}$ to capture the relevant information from the past. The state $\mathbf{x}_t$ can often function as a bottleneck, removing irrelevant historical information, allowing a parsionious representation of the sequence $\mathbf{y}_{1:t}$ to date.</p>
+
+<figure>
+  <img class="image" width="300" src="/assets/img/ds-gm.svg" alt="&lt;br&gt;&lt;b&gt;Figure 5&lt;/b&gt;: graphical model of a dynamical system." style="
+	    
+	    
+	    	border:0px;
+    	
+    " />
+  
+  <figcaption class="image-caption"><br /><b>Figure 5</b>: graphical model of a dynamical system.</figcaption>
+  
+</figure>
+
+<p>Dynamical systems take the following form, where the hidden state $\mathbf{x}_t$ follows a (possibly stochastic) dynamical model, and the $\mathbf{y}_t$ are conditionally independent of the past, given $\mathbf{x}_t$:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+    \mathbf{x}_t &\;\sim\; p(\mathbf{x}_t \mid \mathbf{x}_{t-1};\, \boldsymbol{\psi}), \\
+    \mathbf{y}_t &\;\sim\; p(\mathbf{y}_t \mid \mathbf{x}_{t};\, \boldsymbol{\psi}),
+\end{align} %]]></script>
+
+<p>for $t=1,\ldots, T$, with parameters $\boldsymbol{\theta} = \{ \boldsymbol{\psi},\, \mathbf{x}_0\}$. The distribution over the observations can then be obtained via marginalization (integration):</p>
+
+<script type="math/tex; mode=display">p(\mathbf{y}_{1:T} \mid \boldsymbol{\theta}) = \int \prod_{t=1}^T p(\mathbf{y}_t \mid \mathbf{x}_{t};\, \boldsymbol{\psi})\, p(\mathbf{x}_t \mid \mathbf{x}_{t-1};\, \boldsymbol{\psi})\, d \mathbf{x}_{1:T}.</script>
+
+<p>Dynamical systems have a number of desirable properties in general, such as time-invariant feature extraction, linear complexity in $T$, and in principle, an unbounded length of temporal dependence. The class of dynamical systems is highly general and encompasses ARMA type models, linear Gaussian state space models, some GPs, recurrent neural networks (RNNs) and others beside. Dynamical systems may often also contain inputs ($\mathbf{u}_t$), as in the graphical model shown in Figure 5.</p>
+
+<p><br /></p>
+<h3 id="learning-a-model-of-the-sequence-family">Learning a model of the sequence family</h3>
+
+<p>There is a certain degeneracy between the likelihood and the prior. One may consider a highly over-parameterized likelihood, and set all the unnecessary parameters to zero in the prior. This is a useful approach, since it largely avoids the search over architecture choice, and results in a single learning problem. As such, let us consider a large dynamical system; with the right parameters, such models can do a good job of modelling many real-world phenomena. However, the corollary of this is the presence of a weak inductive bias, which puts us back into the high-variance prediction situation of Figure 4.</p>
+
+<p>In order to circumvent this problem, a common approach is to <strong>pool together</strong> the collected sequences, and a single model with $\boldsymbol{\theta}=\boldsymbol{\theta}_0$ used to fit them all. This is effectively appealing to some form of <em>averaging</em> to reduce the high-variance predictions. We call this one-size-fits-all approach a ‘<strong>pooled model</strong>’, and this corresponds to using a prior $p(\boldsymbol{\theta}) = \delta(\boldsymbol{\theta} - \boldsymbol{\theta}_0)$; a Dirac delta function.<sup id="fnref:pooled"><a href="#fn:pooled" class="footnote">5</a></sup> This degenerate sequence family is clearly unable to model the complexity of the inter-sequence variation and can dramatically underfit the sequences. For instance, personalized predictions are not possible. I must stress that this is a <em>very</em> common approach.</p>
+
+<p>Recurrent neural networks (RNNs) are widely trained as a ‘pooled model’, and nevertheless can model the inter-sequence variation well (if not entirely reliably). But this performance does not generally extend to linear dynamical systems, ARMA models, or any other commonly used statistical or engineering models. In consequence of using an RNN, we need large amounts of data, and lose hope of interpreting the model, or obtaining the kinds of insight provided by structured and switching dynamical systems. Further discussion of RNNs and our related contributions will be relegated to the next post; for now we will consider the common case where interpretation, unsupervised insight and low sample complexity are important factors.</p>
+
+<p>One may instead take a scientific approach, and through careful examination and experimentation derive a bespoke model $p(\mathbf{y}_{1:T}\,|\, \boldsymbol{\theta})$ for the application, with a small number of interpretable parameters. But in many cases this will be impractical, in terms of time or money, and sometimes perhaps impossible.</p>
+
+<p>Given possession of samples from a sequence family (the ‘training set’), it is natural to ask: can we learn a model of the <em>sequence family</em>, rather than just a single <em>model</em>? The <strong>multi-task dynamical system</strong> (MTDS) was developed to answer this question. Instead of learning a single parameter $\boldsymbol{\theta}_0$ via averaging, the MTDS learns a distribution $p(\boldsymbol{\theta})$. Crucially, this prior distribution only has density on a <strong>low dimensional manifold</strong> in parameter space, capturing the important degrees of freedom in the sequence family, and ignoring the others. Hence we learn to approximate the inductive bias implied by the training set, and prune out inter-sequence variation which is not supported by the training set. While not our motivation, this can also remove problematic ‘sloppy directions’ (see e.g.
+<a class="citation" href="#transtrum2011geometry">Transtrum et al., 2011</a>);
+directions in parameter space which make little difference to the model fit.</p>
+
+<!-- The sequence family acts as a strong inductive bias via use of the parameter prior $p(\boldsymbol{\theta})$ and via the model architecture. While in this case the bouncing ball sequence family can be minimally represented with two parameters: gravitational force and drag, we may instead use a large recurrent neural network (RNN) with many thousands of parameters to perform the same job. An appropriately chosen parameter prior $p(\boldsymbol{\theta})$ for the RNN can nevertheless result in (approximately) the same sequence family as the original model. -->
+
+<!-- When I first encountered forecasting problems 10 years ago, when I was working in credit risk, I thought that use of statistical models was highly problematic. After all, there is often no reason to presume that the past is indicative of the future, and there are an infinitude of functions that can fit -->
+
+<!-- Where such sequence families are well-known, a minimal parameterization is often available, and hence the degrees of freedom and sensitivities thereof are well known. In such cases, the parameters may be estimated with high accuracy from a small number of carefully chosen measurements. -->
+
+<!-- Where no such sequence family is known for a given problem, machine learning (ML) is often applied instead; using highly flexible models with many more parameters. Here, the optimization algorithm tunes the (large) parameter vector in lieu of painstaking analysis of the problem. This approach is frequently taken in such domains as healthcare, finance, retail, as well as graphics applications such as motion capture (mocap) and video models. Some examples are given in Figure 5a, 5b. -->
+
+<!-- Due to the large number of parameters, each context requires a much larger amount of data than the known sequence families above, and hence typically the training data consists of sequences from a wide variety of sources, such as different people or business units. This creates a modelling problem: a large amount of data is needed to fit the agnostic ML model, but since insufficient data are usually known about any given source, we must *pool these different sequences together to fit a single model*. We therefore miss out on personalized (or customized) models and predictions. -->
+<!-- If we wish to realize these customized models, we might look to discover the sequence family in question. This can proceed in two ways: painstaking analysis of the generating process to identify the degrees of freedom (as per traditional scientific understanding), or we *learn* the degrees of freedom directly from the data. -->
+
+<figure>
+  <img class="image" width="500px" src="/assets/img/generic_mtlds_z_interp_trans.svg" alt="&lt;b&gt;Figure 6&lt;/b&gt;: A learned sequence family model: interpolating along the sequence manifold." style="
+	    
+	    	padding-right:100px;
+	    
+	    
+	    	border:0px;
+    	
+    " />
+  
+  <figcaption class="image-caption"><b>Figure 6</b>: A learned sequence family model: interpolating along the sequence manifold.</figcaption>
+  
+</figure>
+
+<p><br /></p>
+<h3 id="the-multi-task-dynamical-system-mtds">The multi-task dynamical system (MTDS)</h3>
+
+<p>Having motivated the MTDS, we now come to describe it mathematically. As we have seen, the MTDS is a hierarchical model of dynamical systems. We will define the parameter prior by:</p>
+
+<script type="math/tex; mode=display">p(\boldsymbol{\theta}; \boldsymbol{\phi}) = \int \delta(\boldsymbol{\theta} - h_{\boldsymbol{\phi}}(\mathbf{z}))\, p(\mathbf{z})\, d \mathbf{z},</script>
+
+<p>which restricts $\boldsymbol{\theta}$ to a manifold defined by $h_{\boldsymbol{\phi}}$, indexed by the latent variable $\mathbf{z} \sim p(\mathbf{z})$. The (possibly nonlinear) mapping $h_{\boldsymbol{\phi}}$ embeds the latent variable in $\Theta$, and defines a low dimensional manifold when $\textrm{dim}(\mathbf{z}) &lt; d$.
+<!-- The dynamical system is comprised of a latent chain (called the 'state') $\mathbf{x}_{1:T}$ which depends on a (possibly empty) input sequence $\mathbf{u}\_{1:T}$ and emits an output sequence $\mathbf{y}\_{1:T}$.  -->
+Each sequence $i$ in the training set draws a parameter vector $\boldsymbol{\theta}^{(i)} \sim p(\boldsymbol{\theta}; \boldsymbol{\phi})$, with an associated latent variable $\mathbf{z}^{(i)}$. Hence the generative model for each sequence $i \in 1,\ldots, N$ is:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align*}
+  \boldsymbol{\theta}^{(i)} \;&=\; h_{\boldsymbol{\phi}}(\mathbf{z}^{(i)}), \quad  \mathbf{z}^{(i)} \;\sim\; p(\mathbf{z}), \\
+  \mathbf{x}_t^{(i)} \;&\sim\; p\left(\mathbf{x}^{(i)} \;\middle\vert\; \mathbf{x}_{t-1}^{(i)},\; \mathbf{u}_t^{(i)},\; \boldsymbol{\theta}^{(i)}\right), \\
+  \mathbf{y}_t^{(i)} \;&\sim\; p\left(\mathbf{y}_t^{(i)} \;\middle\vert\; \mathbf{x}_t^{(i)},\; \mathbf{u}_t^{(i)},\; \boldsymbol{\theta}^{(i)}\right)
+\end{align*} %]]></script>
+
+<p>for $t = 1,\ldots, T_i$. Our experiments have used $p(\mathbf{z}) = \textrm{Normal}(\mathbf{z}\,\vert\, \mathbf{0}_k, I_k)$, which allows a factor analysis or VAE<sup id="fnref:vaedef"><a href="#fn:vaedef" class="footnote">6</a></sup>-like prior over $\boldsymbol{\theta}$ depending on the choice of $h_{\boldsymbol{\phi}}$. The initial state $\mathbf{x}_0$, may be learned, fixed to some value (e.g. to $\mathbf{0}$) or made dependent on $\mathbf{z}$.</p>
+
+<figure>
+  <img class="image" width="900" src="/assets/img/mtds-gm-comp.svg" alt="&lt;br&gt;&lt;b&gt;Figure 7&lt;/b&gt;: dynamical system approaches: (left) single task; (middle) multi-task; (right) pooled." style="
+	    
+	    
+	    	border:0px;
+    	
+    " />
+  
+  <figcaption class="image-caption"><br /><b>Figure 7</b>: dynamical system approaches: (left) single task; (middle) multi-task; (right) pooled.</figcaption>
+  
+</figure>
+
+<p><br />
+This hierarchical construction sits between the two common extremes of time series modelling: either learning separate models per sequence (Figure 7, left) or pooling all the sequences and learning a single model (Figure 7, right). The MTDS learns a manifold (described by $h_{\boldsymbol{\phi}}$) in parameter space, with the goal of capturing a small number of degrees of freedom of the sequence model. By maximizing the marginal (log) likelihood:</p>
+
+<script type="math/tex; mode=display">\sum_{i=1}^N \log p(\mathbf{y}_{1:T_i} \mid \mathbf{u}_{1:T_i},\, \boldsymbol{\phi}) = \sum_{i=1}^N \log \int p(\mathbf{y}_{1:T_i} \mid \mathbf{u}_{1:T_i},\, h_{\boldsymbol{\phi}}(\mathbf{z}))\, p(\mathbf{z}) \, d \mathbf{z}, \label{marginalllh}\tag{1}</script>
+
+<p>the MTDS can learn a distribution $p(\boldsymbol{\theta}; \boldsymbol{\phi})$ which is hopefully a good approximation of the true sequence family. Details about optimizing eq. (\ref{marginalllh}) can be found on <a href="https://arxiv.org/abs/1910.05026">arxiv</a> (and soon in my thesis); for certain base dynamical systems, it suffices to use variational methods, but some circumstances require a little more care.</p>
+
+<p><br /></p>
+<h3 id="example-linear-dynamical-systems">Example: Linear dynamical systems</h3>
+
+<p>Nice in theory. Let’s take it for a ride. As an example, consider the MTDS constructed from a linear dynamical system (LDS) with a state dimension of $n_x=8$, inputs $\mathbf{u}_t \in \mathbb{R}^{n_u}$, and emissions $y_t \in \mathbb{R}$ for each $t \in 1,\ldots,T$. For the sake of ease, we will assume the LDS has a deterministic state. The LDS is defined as:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align*}
+  \mathbf{x}_t \,&=\, A\,\mathbf{x}_{t-1} + B\, \mathbf{u}_{t}  \\
+  y_t \,&=\, C\,\mathbf{x}_{t} + D\,\mathbf{u}_{t} + d + \epsilon_t \label{lds}\tag{2}
+\end{align*} %]]></script>
+
+<p>for $\epsilon_t \sim \mathcal{N}(0, \sigma^2)$. Such a model has parameters $\boldsymbol{\theta} = \{A, B, C, D, \sigma\}$, with $\boldsymbol{\theta} \in \mathbb{R}^d$ where $d= 74 + 9n_u$. While this is small by deep learning standards, it’s relatively large compared to many physical models.</p>
+
+<p>Suppose, for example, that we are only interested in sequences described by the linear combination of two damped harmonic oscillators, with no dependence on inputs. Using a weak prior distribution over $\boldsymbol{\theta}$, e.g. $p(\boldsymbol{\theta}) = \mathcal{N}(\mathbf{0}_d, \kappa I_d)$ for $\kappa \in \mathcal{O}(10)$ results in a fairly low inductive bias; such a model can describe a wide variety of possible sequences (see samples in Figure 8a)<sup id="fnref:weakseqprior"><a href="#fn:weakseqprior" class="footnote">7</a></sup>. In contrast, <em>learning</em> a $p(\boldsymbol{\theta}; \boldsymbol{\phi})$ under the framework of the MTDS on a 4-dimensional manifold results in a strong inductive bias (see samples in Figure 8b).</p>
+
+<div class="row" style="display: flex">
+  <div class="column" style="flex:50%; padding=5px">
+    <img src="/assets/img/LDS8_weakbias.svg" style="width:100%; border:0; padding-left:10px" />
+    <figcaption class="image-caption"><b>Figure 8a</b>: MT-LDS with weak inductive bias.</figcaption>
+  </div>
+  <div class="column" style="flex:50%; padding=5px">
+    <img src="/assets/img/LDS8_strongbias.svg" style="width:100%; border:0" />
+    <figcaption class="image-caption"><b>Figure 8b</b>. MT-LDS with strong inductive bias.</figcaption>
+  </div>
+</div>
+<p><br /></p>
+
+<p>The learned model is an approximation of the true sequence family, and can be used to fit novel sequences with relatively small amounts of data. In principle, the MTDS can learn a model that performs as well as a true physical model, but importantly, can yield similar gains even where no physical model is known (provided the signal-to-noise ratio is similarly high). In my thesis, we demonstrate that we can learn physical models well, via use of the damped harmonic oscillation example introduced above. To get a feel for how these models can be useful in practice, see below for a video of how quickly the MT-LDS can tune into novel sequences. The iterative updates are performed via Bayesian updating, with 95% credible intervals shown in orange.</p>
+
+<p><br />
+<!-- Courtesy of nathancy/jekyll-embed-video --></p>
+
+<div class="embed-container">
+  <iframe width="640" height="400" src="https://drive.google.com/file/d/1Td71zVXJkbKHGcuKFQNc8E71StotR3uL/preview" frameborder="0" allowfullscreen="">
+  </iframe>
+</div>
+
+<p><br /></p>
+
+<p>For more details on how the LDS is parameterized, and how the Bayesian inference is implemented, see the paper on <a href="https://arxiv.org/abs/1910.05026">arxiv</a> for the time being – I’ve swept a few details under the rug. I’m currently writing this up in a more complete form in my thesis.</p>
+
+<p><br /></p>
+<h3 id="implementation">Implementation</h3>
+
+<p><br /></p>
+<h3 id="application-to-drug-response-modelling">Application to drug response modelling</h3>
+
+<p><br /></p>
+<h3 id="bibliography">Bibliography</h3>
+
+<ol class="bibliography"><li><span id="sarkka2013bayesian">Särkkä, S. (2013). <i>Bayesian Filtering and Smoothing</i> (Vol. 3). Cambridge University Press.</span></li>
+<li><span id="kingma2014vae">Kingma, D. P., &amp; Welling, M. (2014). Stochastic Gradient VB and the Variational Auto-Encoder. <i>Second International Conference on Learning Representations, ICLR</i>.</span></li>
+<li><span id="transtrum2011geometry">Transtrum, M. K., Machta, B. B., &amp; Sethna, J. P. (2011). The Geometry of Nonlinear Least Squares with Applications to Sloppy Models and Optimization. <i>Physical Review E</i>, <i>83</i>(3).</span></li></ol>
+
+<h2><br /></h2>
+<h3 id="footnotes">Footnotes</h3>
+
+<!-- Further, sequences are often conditioned on inputs; while the sequence space depends on the input sequence, the parameter space does not. -->
+<div class="footnotes">
+  <ol>
+    <li id="fn:Matern">
+      <p>Full disclosure: the sequences drawn in Figure 4 use a Gaussian Process with Matérn 3/2 covariance function, with magnitude 15 and various scale lengths. For the purposes of the illustration, this uses a constant mean function at height 20. This is technically a sequence family too, but a very large one. None of this is pertinent to the discussion. <a href="#fnref:Matern" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:Drucker">
+      <p>Of course, this cannot be known in advance except in a few special cases, and hence is a matter of trust. It has long been noted that predicting sequential data (or ‘forecasting’) is a problematic pursuit. Of the many famous quotations on the subject (see e.g. the <a href="http://www1.secam.ex.ac.uk/famous-forecasting-quotes.dhtml">Exeter forecasting quotes page</a>), one that I particularly like is from Peter Drucker: “[Forecasting] is like trying to drive down a country road at night with no lights while looking out the back window.” <a href="#fnref:Drucker" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:introductionDS">
+      <p>This is not a great introduction for those who are unfamiliar with them – I highly recommend <a class="citation" href="#sarkka2013bayesian"> Särkkä (2013)</a> as an introductory text, although it is not necessary to fully understand dynamical systems for what follows. It is sufficient to understand that they are flexible sequential models. <a href="#fnref:introductionDS" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:ssms">
+      <p>In this article, I use the term dynamical systems primarily to refer to their discrete time formulation. This simplifies some of the explanation and mathematical machinery, but the discussion applies more widely. <a href="#fnref:ssms" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:pooled">
+      <p>Pooled models may be a little more complicated, for instance via use of time warping or random effects governing the signal magnitude. But in the vast majority of cases, the <em>shape</em> of the modelled sequence is only an average. <a href="#fnref:pooled" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:vaedef">
+      <p>VAE = Variational autoencoder <a class="citation" href="#kingma2014vae">(Kingma &amp; Welling, 2014)</a>. <a href="#fnref:vaedef" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:weakseqprior">
+      <p>While Figure 8a looks a little like white noise, it is in fact a weak prior on the specified MT-LDS. The eye tends to be drawn to the high frequency components, which are dominant with high probability under the chosen prior. <a href="#fnref:weakseqprior" class="reversefootnote">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+  </div><a class="u-url" href="/2020/04/02/mtds.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <!-- <p class="feed-subscribe">
+          <a href="/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+        <ul class="contact-list">
+          
+        </ul>
+      </div> -->
+      <div class="footer-col"><ul class="social-media-list">
+  <li><a href="https://github.com/ornithos"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">ornithos</span></a></li></ul>
+</div>
+      <div class="footer-col">
+        <p>Reflections of my work in machine learning.</p>
+      </div>
+    </div>
+
+    <!-- <div class="social-links"><ul class="social-media-list">
+  <li><a href="https://github.com/ornithos"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">ornithos</span></a></li></ul>
+</div> -->
+
+  </div>
+
+</footer>
+
+<div class="bottom-panel" id="bottom-panel">
+    <div class="popup-wrapper" id="popup-wrapper"></div>
+</div>
+<script src="/assets/footnotes.js"></script>
+</body>
+
+</html>

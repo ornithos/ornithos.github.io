@@ -399,8 +399,11 @@ This hierarchical construction sits between the two common extremes of time seri
 <p><a href="https://github.com/ornithos/MTDS.jl/blob/master/notebooks/mtlds-example.ipynb">This notebook</a> provides an extensive exploration of the performance of the MT-LDS, including the 8-dimensional example above. This builds on the implementation at
 <a href="https://github.com/ornithos/MTDS.jl">https://github.com/ornithos/MTDS.jl</a> which is a work-in-progress to consolidate the codebase for my phd. The sequential inference routine has been factored out, and is now available as a <a href="https://github.com/ornithos/SeqAdaptiveIS">standalone inference library</a>.</p>
 
-<p><br /></p>
-<h3 id="application-to-drug-response-modelling">Application to drug response modelling</h3>
+<!-- <br>
+### Application to drug response modelling
+One of the original motivations for this work was the problem of predicting the response of different patients to a drug infusion. Of course, the human body is enormously complex, resulting in a wide variety of disease states and drug responses, and a one-size-fits-all model often performs poorly. The use of standard covariates such as age, weight, gender etc. may explain only a small part of this variation. We worked with a consultant anaesthetist in Glasgow who provided the response of 40 patients to a continuous infusion of an anaesthetic agent. For each patient, the data provided a three-dimensional response (systolic and diastolic blood pressure, and BIS, a measure of consciousness) and a corresponding input drug infusion, all sampled every 15 seconds.
+
+By learning a sequence family over the evolution of the response, and the relationship to the drug infusion, we were able to adapt our model online to the currently observed patient response. See Figure ref for an example -->
 
 <p><br /></p>
 <h3 id="bibliography">Bibliography</h3>

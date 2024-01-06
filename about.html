@@ -1,137 +1,200 @@
 <!DOCTYPE html>
-<html lang="en"><head>
+<html lang="en">
+
+<head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>About | Alex Bird</title>
-<meta name="generator" content="Jekyll v3.8.5" />
-<meta property="og:title" content="About" />
-<meta name="author" content="Alex Bird" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="Reflections of my work in machine learning." />
-<meta property="og:description" content="Reflections of my work in machine learning." />
-<meta property="og:site_name" content="Alex Bird" />
-<script type="application/ld+json">
+  <title>About | Alex Bird</title>
+  <meta name="generator" content="Jekyll v3.8.5" />
+  <meta property="og:title" content="About" />
+  <meta name="author" content="Alex Bird" />
+  <meta property="og:locale" content="en_US" />
+  <meta name="description" content="Reflections of my work in machine learning." />
+  <meta property="og:description" content="Reflections of my work in machine learning." />
+  <meta property="og:site_name" content="Alex Bird" />
+  <script type="application/ld+json">
 {"author":{"@type":"Person","name":"Alex Bird"},"url":"/about.html","description":"Reflections of my work in machine learning.","@type":"WebPage","headline":"About","@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
-<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
-  <link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="Alex Bird" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
-    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"></script>
-    <script>
-      document.addEventListener("DOMContentLoaded", function() {
-        renderMathInElement( document.body, {
-          delimiters: [
-            {left: "$$", right: "$$", display: true},
-            {left: "[%", right: "%]", display: true},
-            {left: "$", right: "$", display: false}
-          ]}
-        );
-      });
-    </script>
-  
+  <!-- End Jekyll SEO tag -->
+  <link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/main.css">
+  <link type="application/atom+xml" rel="alternate" href="/feed.xml" title="Alex Bird" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css"
+    integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+  <script type="text/javascript" async
+    src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"> </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js"
+    integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz"
+    crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js"
+    integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI"
+    crossorigin="anonymous"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      renderMathInElement(document.body, {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "[%", right: "%]", display: true },
+          { left: "$", right: "$", display: false }
+        ]
+      }
+      );
+    });
+  </script>
+
 
   <script>
-  function wrap_img(fn) {
-    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+    function wrap_img(fn) {
+      if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
         var elements = document.querySelectorAll(".post img");
-        Array.prototype.forEach.call(elements, function(el, i) {
-            if (el.getAttribute("title")) {
-                const caption = document.createElement('figcaption');
-                var node = document.createTextNode(el.getAttribute("title"));
-                caption.appendChild(node);
-                const wrapper = document.createElement('figure');
-                wrapper.className = 'image';
-                el.parentNode.insertBefore(wrapper, el);
-                el.parentNode.removeChild(el);
-                wrapper.appendChild(el);
-                wrapper.appendChild(caption);
-            }
+        Array.prototype.forEach.call(elements, function (el, i) {
+          if (el.getAttribute("title")) {
+            const caption = document.createElement('figcaption');
+            var node = document.createTextNode(el.getAttribute("title"));
+            caption.appendChild(node);
+            const wrapper = document.createElement('figure');
+            wrapper.className = 'image';
+            el.parentNode.insertBefore(wrapper, el);
+            el.parentNode.removeChild(el);
+            wrapper.appendChild(el);
+            wrapper.appendChild(caption);
+          }
         });
-    } else { document.addEventListener('DOMContentLoaded', fn); }
-  }
-  window.onload = wrap_img;
+      } else { document.addEventListener('DOMContentLoaded', fn); }
+    }
+    window.onload = wrap_img;
   </script>
 
 </head>
-<body><header class="site-header" role="banner">
 
-  <div class="wrapper"><a class="site-title" rel="author" href="/">Alex Bird</a><nav class="site-nav">
+<body>
+  <header class="site-header" role="banner">
+
+    <div class="wrapper"><a class="site-title" rel="author" href="/">Alex Bird</a>
+      <nav class="site-nav">
         <input type="checkbox" id="nav-trigger" class="nav-trigger" />
         <label for="nav-trigger">
           <span class="menu-icon">
             <svg viewBox="0 0 18 15" width="18px" height="15px">
-              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+              <path
+                d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z" />
             </svg>
           </span>
         </label>
 
         <div class="trigger"><a class="page-link" href="/about.html">About</a></div>
-      </nav></div>
-</header>
-<main class="page-content" aria-label="Content">
-      <div class="wrapper">
-        <article class="post">
-
-  <header class="post-header">
-    <h1 class="post-title">About</h1>
+      </nav>
+    </div>
   </header>
+  <main class="page-content" aria-label="Content">
+    <div class="wrapper">
+      <article class="post">
 
-  <div class="post-content">
-    <p>Hi, I’m Alex Bird, and this blog. Welcome, and thank you for being here!</p>
+        <header class="post-header">
+        </header>
 
-<p>While I should probably refrain from using the first person pronoun, I have a very strong preference for speaking in person, and old habits die hard. Just for a moment, I would prefer to pretend that we’re not meeting through the emotionless medium of a screen, despite the fact that we are, and the fact that we are not really  meeting. To add insult to injury, I cannot really welcome you, since I’m not doing any of the hosting. I must thank Github for that honour.<sup id="fnref:fastaitemplate"><a href="#fn:fastaitemplate" class="footnote">1</a></sup> My apologies for this
-rather uncongenial experience.</p>
+        <div class="post-content">
 
-<p><br /></p>
-<h3 id="who-am-i">Who am I?</h3>
-<p>I’m just finishing up a phd in machine learning (ML) at the Turing Institute (London, UK) and the University of Edinburgh. I came into ML through a moderately circuitous path. I spent my (maths) undergraduate more interested in music than mathematics, which continued for a number of years after. Finally capitulating to a ‘real job’, I worked for 5 years in the data analytics space in credit risk and retail (riding the swell of the data science wave
-at that time). Modelling became my new music, and I spent all my free time in my mid/late twenties teaching myself statistics, modelling and how to code.</p>
+          <h2 id="about">About</h2>
+          <p>I’ve been heading up the ML and Data Science team at Quine since late 2020. Quine is a small startup with
+            the aim of quantifying developer competence and reputation. The goal is twofold: to help developers monetise
+            their experience via job, contract and issue matching, and to make the open source ecosystem more
+            sustainable. Prior to this, I completed a PhD in ML (and some post-doc work) at the Alan Turing Institute
+            (supervised by <a href="https://homepages.inf.ed.ac.uk/ckiw/">Chris Williams</a>) after spending 5 years as
+            a data scientist in retail and credit risk.</p>
+          <p>My primary interest has been a delight in the beauty, elegance and depth of technical knowledge (maths,
+            statistics, computer science), combined with a keen interest in what it unlocks creatively. I find the two
+            sides complement each other well. One often needs a hook. On the other hand, I’ve also found that building
+            real-world products, I am looking for the simplest thing that works well. Don’t get me wrong; I like solving
+            hard problems, I like creating a complex and seemingly smart solution. But quite often, re-formulating a
+            problem in the right way can result in simple methods performing just as well, and this can do wonders for
+            stability, tech debt and interpretability.</p>
+          <p>Other significant experience includes OLAP databases, analytics, data platform design and engineering,
+            backend, scraping and data visualization. I’ve worked in domains including credit risk, customer behaviour,
+            supply chain time-series, medical time-series, motion-capture data, synthetic video generation,
+            software-focused natural language, source code analysis, social networks.</p>
+          <p><br /></p>
 
-<p>There’s a certain magic about machine learning, when applied right. I’m keen to pitch in wherever I can to help this disappointingly rare feat become easier and more common. This may take the form of more research, or more blogging. I also do a bit of teaching with <a href="https://cambridgespark.com/">Cambridge Spark</a>. But this is fundamentally a community effort, and I’m currently working out how I can better serve the community in this endeavour. My interests are currently in time series models, deep generative models, multi-task/meta-learning, variational and Monte Carlo methods. I intend to touch on many of these over the coming months (and years!).</p>
+          <p><br /></p>
+          <h2 id="research">Research and Academic Code</h2>
 
-<!-- Clearly the appropriate use of data can be really powerful, and like any technology has tremendous power for good or ill. -->
+          <b>2022</b>
 
-<p><br /></p>
-<h3 id="what-is-this">What is this?</h3>
-<p>This is primarily a blog for my thoughts and explanations of machine learning models. To be sure, the internet is full of blogs and medium posts about machine learning, some better than others. I’m intending to fill in some gaps from the research that I’ve been doing, rather than following in well trodden paths. Initially this will be my phd projects, and related learnings, much of which did not make it into any publication. Research probably bears some analogy to rejection sampling, especially where little theory is available for guidance (as in ML), and one learns as much through failures (perhaps
-more so) than successes. I’m especially interested in making some of my negative results available; while it is difficult to verify these, it may still  give a few pointers to those who set foot in the same direction.</p>
+          <p><b>Multi-Task Dynamical Systems</b> <a
+              href="https://jmlr.org/papers/volume23/20-1446/20-1446.pdf">(pdf)</a>
+          </p>
+          <p>Alex Bird, Christopher K.I. Williams, Christopher Hawthorne. <a href="https://jmlr.org/">Journal of Machine
+              Learning Research</a> 23(230) 1-52 (2022).</p>
 
-<p><br /></p>
-<h3 id="why-is-there-only-a-single-blog-post">Why is there only a single blog post?</h3>
-<p>Yeah, so I started this blog at the end of March 2020, and I’ve managed to be ill for the entirety of April. I have a number of blog posts that I’d like to write – but I’m having to juggle writing up my phd, paid work, and taking it easy until I get better.</p>
+          <p>Video examples of the Mocap work can be seen <a
+              href="https://sites.google.com/view/mtds-customized-predictions/">here</a></p>
 
-<p><br /></p>
-<h3 id="contact">Contact</h3>
-<p>I’m not overly enamoured of social media, and I’m not really contactable there, so I’ll work out some way for those who are interested to get in touch. For the time being, you can use {first-letter-of-first-name} {last-name} {at} turing {dot} ac {dot} uk (no spaces), but I’ll try to get around to something better soon.
-<br />
-<br /></p>
+          <br />
+          <b>2021</b>
 
-<hr />
-<p><strong>Footnotes</strong>:</p>
 
-<div class="footnotes">
-  <ol>
-    <li id="fn:fastaitemplate">
-      <p>Also thanks to fast.ai for the site <a href="https://github.com/fastai/fast_template">template</a> <a href="https://www.fast.ai/2020/01/16/fast_template/">(introductory blog)</a>. I’ve made some modifications – so any poor choices remain my own responsibility. No, I’m not using Minimal Mistakes, and yes I know it’s excellent. <a href="#fnref:fastaitemplate" class="reversefootnote">&#8617;</a></p>
-    </li>
-  </ol>
-</div>
+          <p><b>PhD Thesis - Multi-Task Dynamical Systems</b> <a href="https://era.ed.ac.uk/handle/1842/38267">(pdf)</a>
+          </p>
+          <p>Edinburgh University, 2021</p>
 
-  </div>
 
-</article>
+          <p><b>Adaptive Mixture Importance Sampling</b> <a
+              href="https://github.com/ornithos/SeqAdaptiveIS">(GitHub)</a>
+          </p>
+          <p>
+          <ul>
+            <li>(defined in the above thesis)</li>
+            <li>This is a sequential Monte-Carlo algorithm for sampling from a distribution over time. It is
+              specifically useful for generating samples from a posterior distribution as more information is gleaned as
+              time evolves. It is surprisingly hard to generate enough diversity using existing sequential algorithms.
+            </li>
 
-      </div>
-    </main><footer class="site-footer h-card">
-  <data class="u-url" href="/"></data>
+          </ul>
+          </p>
 
-  <div class="wrapper">
+          <p><b>Video Generation of a Double Pendulum from a Multi-Task Dynamical model </b> <a
+              href="https://github.com/ornithos/mtds-dblpend">(GitHub)</a>
+          </p>
+          <p>
+          <ul>
+            <li>Using a GRU (RNN-type) model.</li>
+            <li>While this is a novel implementation (from scratch), producing videos of double pendulums is not novel.
+              What is interesting here is using the latent task variable to model the different trajectories implied by
+              the chaotic system. (See e.g. the three video panels in the README.)
+            </li>
+            <li>More examples can be found <a
+                href="https://sites.google.com/view/mtds-customized-predictions/">here</a>.</li>
 
-    <div class="footer-col-wrapper">
-      <!-- <div class="footer-col"> -->
+          </ul>
+          </p>
+
+          <br />
+          <b>2019</b>
+
+
+          <p><b>Multi-Task Time Series Analysis applied to Drug Response Modelling</b> <a
+              href="https://homepages.inf.ed.ac.uk/ckiw/postscript/bird_aistats19.pdf">(pdf)</a>
+          </p>
+          <p>Alex Bird, Christopher K. I. Williams, Christopher Hawthorne. In 22nd <a
+              href="https://aistats.org/">International Conference on
+              Artificial Intelligence and Statistics (AISTATS)</a> 2019. PMLR Vol 89.
+          </p>
+
+
+
+        </div>
+
+      </article>
+
+    </div>
+  </main>
+  <footer class="site-footer h-card">
+    <data class="u-url" href="/"></data>
+
+    <div class="wrapper">
+
+      <div class="footer-col-wrapper">
+        <!-- <div class="footer-col"> -->
         <!-- <p class="feed-subscribe">
           <a href="/feed.xml">
             <svg class="svg-icon orange">
@@ -140,31 +203,35 @@ more so) than successes. I’m especially interested in making some of my negati
           </a>
         </p>
         <ul class="contact-list">
-          
+
         </ul>
       </div> -->
-      <div class="footer-col"><ul class="social-media-list">
-  <li><a href="https://github.com/ornithos"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">ornithos</span></a></li></ul>
-</div>
-      <div class="footer-col">
-        <p>Reflections of my work in machine learning.</p>
+        <div class="footer-col">
+          <ul class="social-media-list">
+            <li><a href="https://github.com/ornithos"><svg class="svg-icon">
+                  <use xlink:href="/assets/minima-social-icons.svg#github"></use>
+                </svg> <span class="username">ornithos</span></a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <p>Reflections of my work in machine learning.</p>
+        </div>
       </div>
-    </div>
 
-    <!-- <div class="social-links"><ul class="social-media-list">
+      <!-- <div class="social-links"><ul class="social-media-list">
   <li><a href="https://github.com/ornithos"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">ornithos</span></a></li></ul>
 </div> -->
 
-  </div>
+    </div>
 
-</footer>
+  </footer>
 
-<div class="wrapper">
-  <div class="bottom-panel" id="bottom-panel">
+  <div class="wrapper">
+    <div class="bottom-panel" id="bottom-panel">
       <div class="popup-wrapper" id="popup-wrapper"></div>
+    </div>
+    <script src="/assets/footnotes.js"></script>
   </div>
-  <script src="/assets/footnotes.js"></script>
-</div>
 </body>
 
 </html>
